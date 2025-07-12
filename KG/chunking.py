@@ -16,7 +16,7 @@ def split_data_from_file(file):
     chunks_with_metadata = [] 
     
     #### Load json file
-    file_as_object = json.load(open(file)) 
+    file_as_object = json.load(open(file, encoding='utf-8')) 
     keys = list(file_as_object.keys())
     print(keys)
     #### pull these keys from the json file

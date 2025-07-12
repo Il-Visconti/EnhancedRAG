@@ -1,12 +1,12 @@
 import os
 from dotenv import load_dotenv
-from langchain_community.graphs import Neo4jGraph  # Adjust this import if needed
+from langchain_neo4j import Neo4jGraph  # Adjust this import if needed
 
 def load_neo4j_graph(env_path: str = '.env') -> Neo4jGraph:
     # Load from environment
     load_dotenv(env_path, override=True)
     
-    NEO4J_URI = os.getenv('NEO4J_URI')
+    NEO4J_URL = os.getenv('NEO4J_URL')
     NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
     NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
     NEO4J_DATABASE = os.getenv('NEO4J_DATABASE') or 'neo4j'
@@ -17,7 +17,7 @@ def load_neo4j_graph(env_path: str = '.env') -> Neo4jGraph:
 
     # Initialize Neo4j graph object
     graph = Neo4jGraph(
-        url=NEO4J_URI,
+        url=NEO4J_URL,
         username=NEO4J_USERNAME,
         password=NEO4J_PASSWORD,
         database=NEO4J_DATABASE
