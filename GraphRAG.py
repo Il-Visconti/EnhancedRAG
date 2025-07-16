@@ -5,7 +5,7 @@ from langchain_neo4j import GraphCypherQAChain
 import textwrap
 from LLM.prompt import retrieval_qa_chat_prompt
 
-
+# This script generates a Cypher query from a natural language question using a Graph QA chain.
 def generate_cypher_query(
     question: str,
     graph,

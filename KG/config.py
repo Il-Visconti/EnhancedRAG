@@ -5,7 +5,7 @@ from langchain_neo4j import Neo4jGraph  # Adjust this import if needed
 def load_neo4j_graph(env_path: str = '.env') -> Neo4jGraph:
     # Load from environment
     load_dotenv(env_path, override=True)
-    
+    # Load Neo4j connection details from environment variables
     NEO4J_URL = os.getenv('NEO4J_URL')
     NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
     NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')

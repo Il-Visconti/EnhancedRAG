@@ -10,6 +10,7 @@ import os
 
 load_dotenv()
 
+# This script initializes a vector store from an existing Neo4j graph
 def query_vector_rag(
     question: str,
     vector_index_name: str,

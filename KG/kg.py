@@ -1,9 +1,9 @@
 from tqdm import tqdm
 
 
-# 1. Add main nodes without creating relationships
+# 1. Add main nodes without creating relationship
 def create_nodes(graph, data: dict, node_label: str, node_name: str):
-    # Create the main node
+    # Creates main nodes and section nodes in the knowledge graph without relationships.
     main_node_query = f"""
     MERGE (main:{node_label} {{name: $name}})
     """
@@ -22,7 +22,7 @@ def create_nodes(graph, data: dict, node_label: str, node_name: str):
         graph.query(query, params=params)
 
 
-# 2. Add Chunks
+# 2. Ingest file chunks into the knowledge graph
 def ingest_Chunks(graph, chunks, node_name, node_label):
     """
     Ingests file chunk data into the knowledge graph by merging chunk nodes.
@@ -44,7 +44,7 @@ def ingest_Chunks(graph, chunks, node_name, node_label):
             mergedChunk.node_name = $node_name
     RETURN mergedChunk
     """
-
+    # Create nodes for each chunk in the knowledge graph
     node_count = 0
     for chunk in chunks:
         print(f"Creating `:{node_label}` node for chunk ID {chunk['chunkId']}")
@@ -54,7 +54,6 @@ def ingest_Chunks(graph, chunks, node_name, node_label):
 
 
 # 3. Create Relationships
-
 def create_relationship(graph, query: str):
     """
     Executes the provided Cypher query on the given graph.
@@ -69,7 +68,7 @@ def create_relationship(graph, query: str):
 
 
 
-
+# 4. Create Vector Index
 def create_vector_index(graph, index_name):
     # Create the vector index if it does not exist, using the dynamic node label
     vector_index_query = f"""
@@ -85,7 +84,7 @@ def create_vector_index(graph, index_name):
 
 
 
-
+# 5. Embed text using OpenAI API
 def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name):
     """
     Creates embeddings for nodes with a dynamic label using the OpenAI endpoint,
@@ -109,7 +108,7 @@ def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name):
     total_nodes = len(nodes)
     print(f"Found {total_nodes} nodes without embeddings.")
 
-    # Use a single-line progress bar for node updates
+    # Use tqdm to display a progress bar for embedding nodes
     with tqdm(total=total_nodes, desc="Embedding nodes", ncols=100, leave=True) as pbar:
         for record in nodes:
             node_id = record["node_id"]
@@ -126,6 +125,7 @@ def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name):
             ) AS vector
             CALL db.create.setNodeVectorProperty(n, "textEmbeddingOpenAI", vector)
             """
+            # Execute the update query with parameters
             graph.query(update_query, params={
                 "node_id": node_id,
                 "openAiApiKey": OPENAI_API_KEY,

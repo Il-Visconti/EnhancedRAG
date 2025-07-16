@@ -1,7 +1,7 @@
 import json
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-
+## This script is used to split text data from a JSON file into smaller chunks
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size = 2000,
     chunk_overlap  = 200,
@@ -10,7 +10,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 )
 
 
-
+## Function to split data from a JSON file into chunks with metadata
 def split_data_from_file(file):
 		#### define a variable to accumlate chunk records
     chunks_with_metadata = [] 
@@ -33,7 +33,7 @@ def split_data_from_file(file):
         #### loop thtough chunks
         for chunk in item_text_chunks: 
         
-		        #### extract file name from each chunk
+		    #### extract file name from each chunk
             form_name = file[file.rindex('/') + 1:file.rindex('.')]
             
             #### create a record with metadata and the chunk text
